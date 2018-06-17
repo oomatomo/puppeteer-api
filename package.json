@@ -1,0 +1,10 @@
+{
+  "name": "puppeteer-api",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {},
+  "devDependencies": {
+    "express": "^4.16.3",
+    "puppeteer": "^1.4.0"
+  }
+}
