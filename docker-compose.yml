@@ -1,0 +1,12 @@
+version: "3"
+services:
+  api:
+    build: ./
+    volumes:
+      - ./src:/usr/local/src/puppeteer-api/src
+      - ./package.json:/usr/local/src/puppeteer-api/package.json
+      - ./package-lock.json:/usr/local/src/puppeteer-api/package-lock.json
+    ports:
+      - "9000:9000"
+    tty: true
+    command: "/bin/bash"
