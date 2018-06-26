@@ -4,7 +4,7 @@ const devices = require('puppeteer/DeviceDescriptors');
 const url = require('url');
 const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
 
-// コンテンツの中のリンク取得API
+// コンテンツの中のリンクを取得するAPI
 app.get('/content', function (req, res) {
   // url=スクレイピング先
   // device=iPhone, Android
@@ -41,7 +41,8 @@ app.get('/content', function (req, res) {
   })();
 });
 
-app.get('/link/', function (req, res) {
+// リクエストをしたリンクを取得するAPI
+app.get('/link', function (req, res) {
   // url=スクレイピング先
   // device=iPhone 6..etc https://github.com/GoogleChrome/puppeteer/blob/master/DeviceDescriptors.js
   const paramUrl = new URL(req.query.url);
@@ -63,15 +64,17 @@ app.get('/link/', function (req, res) {
         request.respond({ status: 500, body: 'error'});
       }
     });
+    // リクエストが完了したURLを取得
     let links = []
     page.on('requestfinished', request => {
-      const response = request.response();
       links.push(request.url());
     });
+    // エラーの場合はcatchするようにした
     await page.goto(paramUrl.href).catch(err => {
       console.error(err);
       return res.json({ message: err.toString() });
     });
+    // 描画やリダイレクトのためにスリープ処理をしている(3秒は適当)
     await sleep(3000);
     await browser.close();
     res.json({ links: links });
